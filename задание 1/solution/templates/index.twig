@@ -1,0 +1,46 @@
+{% macro render_tree(tree, is_subgroup_after_active) %}
+    {% if tree is not empty %}
+    <ul>
+        {% for group in tree %}
+            <li>
+                <a href="?group={{ group.id }}"{% if group.active %} class="active"{% endif %}>{{ group.name }}</a>
+                {% if is_subgroup_after_active %}{{ group.num }}{% endif %}
+                {% if group.child is not empty %}
+                    {{ _self.render_tree(group.child, group.active) }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endmacro %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Каталог товаров</title>
+    <style>
+        body { display: flex; }
+        .groups { margin-right: 40px; white-space: nowrap; }
+        .products { margin: 0; padding: 0; list-style: none; }
+        a { color: blue; }
+        a.active { color: green; }
+    </style>
+</head>
+<body>
+<div class="groups">
+    <a href="/">Все товары</a>
+    {{ _self.render_tree(tree, active == null) }}
+</div>
+<div>
+    {% if products %}
+        <ul class="products">
+            {% for product in products %}
+                <li>{{ product.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        Товаров нет
+    {% endif %}
+</div>
+</body>
+</html>

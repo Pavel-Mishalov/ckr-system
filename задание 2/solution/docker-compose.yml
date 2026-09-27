@@ -1,0 +1,7 @@
+name: trackcoords
+
+services:
+  app:
+    build: .
+    ports:
+      - "8081:80"

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>trackCoords</title>
+    <style>
+        body { font-family: sans-serif; }
+        .container { width: 400px; height: 250px; margin: 60px 0 30px 150px; border: 2px solid #888; }
+        #points { max-height: 300px; overflow: auto; }
+    </style>
+</head>
+<body>
+<p>Подвигайте мышью над рамкой и за ней.</p>
+
+<div class="container"></div>
+
+<p>Последняя отправка, точек: <span id="count">0</span></p>
+<pre id="points"></pre>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="jquery.trackCoords.js"></script>
+<script>
+    $("div.container").trackCoords({url: '/save.php'});
+
+    $(document).ajaxSuccess(function (e, xhr, options, data) {
+        $('#count').text(data.count);
+        $('#points').text(data.coords.map(function (p) {
+            return p.x + ', ' + p.y + ' - ' + p.time + ' мс';
+        }).join('\n'));
+    });
+</script>
+</body>
+</html>
